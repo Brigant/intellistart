@@ -19,7 +19,7 @@ input := "1 9 3 4 -5" // повертає "9 -5"
 4. Якщо вам потрібні змінні чи константи - вони мають бути локальними, в межах функції main.
 */
 func main() {
-	input := "-1 -5"
+	input := "1 9 3 4 -5"
 	var result string
 
 	var (
@@ -56,5 +56,7 @@ func main() {
 
 	}
 
-	fmt.Printf("max: %v, min: %v\n", max, min)
+	result = strconv.FormatInt(int64(max), 10) + " " + strconv.FormatInt(int64(min), 10)
+
+	fmt.Println(result)
 }
