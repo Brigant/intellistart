@@ -24,11 +24,15 @@ func (f *Farm) getFarmInfo() (tootalFood float64) {
 	return tootalFood
 }
 
+// to do func (f *Farm) addAnimal(animal Animals)
+// to do func (f *Farm) removeAnimal(animal Animals)
+// to do func (f *Farm) killAnimal(animal Animals) // = nil
+
 // Animal entity
 type Animal struct {
-	Name           string
-	Wheight        float64
-	FoodPerWheight float64
+	Name          string
+	weight        float64
+	FoodPerweight float64
 }
 
 type Animals interface {
@@ -45,7 +49,7 @@ type canShowInfo interface {
 }
 
 func (a *Animal) howMuchFood() float64 {
-	return a.Wheight * a.FoodPerWheight
+	return a.weight * a.FoodPerweight
 }
 
 func (a *Animal) showInfo() {
@@ -60,13 +64,24 @@ type Dog struct {
 	BiteForce int
 }
 
-func createDog(name string, wheight float64, biteForce int) Dog {
-	const foodPerWheight = 10
+func createDog(name string, weight float64, biteForce int) Dog {
+	const (
+		foodPerweight = 10
+		minWeight     = 0.1
+		typeAnimal    = "Dog"
+	)
+
+	if name == "" {
+		name = typeAnimal
+	}
+	if weight < minWeight {
+		weight = minWeight
+	}
 	return Dog{
 		Animal: Animal{
-			Name:           name,
-			Wheight:        wheight,
-			FoodPerWheight: foodPerWheight,
+			Name:          name,
+			weight:        weight,
+			FoodPerweight: foodPerweight,
 		},
 		BiteForce: biteForce,
 	}
@@ -83,13 +98,25 @@ type Cat struct {
 	Agilaty int
 }
 
-func createCat(name string, wheight float64, agility int) Cat {
-	const foodPerWheight = 7
+func createCat(name string, weight float64, agility int) Cat {
+	const (
+		foodPerweight = 7
+		minWeight     = 0.1
+		typeAnimal    = "Cat"
+	)
+
+	if name == "" {
+		name = typeAnimal
+	}
+	if weight < minWeight {
+		weight = minWeight
+	}
+
 	return Cat{
 		Animal: Animal{
-			Name:           name,
-			Wheight:        wheight,
-			FoodPerWheight: foodPerWheight,
+			Name:          name,
+			weight:        weight,
+			FoodPerweight: foodPerweight,
 		},
 		Agilaty: agility,
 	}
@@ -106,13 +133,25 @@ type Cow struct {
 	AmountMilk float64
 }
 
-func createCow(name string, wheight float64, amountMilk float64) Cow {
-	const foodPerWheight = 25
+func createCow(name string, weight float64, amountMilk float64) Cow {
+	const (
+		foodPerweight = 25
+		minWeight     = 20
+		typeAnimal    = "Cow"
+	)
+
+	if name == "" {
+		name = typeAnimal
+	}
+	if weight < minWeight {
+		weight = minWeight
+	}
+
 	return Cow{
 		Animal: Animal{
-			Name:           name,
-			Wheight:        wheight,
-			FoodPerWheight: foodPerWheight,
+			Name:          name,
+			weight:        weight,
+			FoodPerweight: foodPerweight,
 		},
 		AmountMilk: amountMilk,
 	}
