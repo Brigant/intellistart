@@ -4,19 +4,19 @@ import (
 	"fmt"
 )
 
-// Farm entity
-type Farm struct {
-	Animals []Animals
+// farm entity
+type farm struct {
+	animals []animals
 }
 
-func createFarm(animals ...Animals) Farm {
-	farm := new(Farm)
-	farm.Animals = append(farm.Animals, animals...)
-	return *farm
+func createFarm(animals ...animals) farm {
+	farm := farm{}
+	farm.animals = append(farm.animals, animals...)
+	return farm
 }
 
-func (f *Farm) getFarmInfo() (tootalFood float64) {
-	for _, animal := range f.Animals {
+func (f farm) getFarmInfo() (tootalFood float64) {
+	for _, animal := range f.animals {
 		animal.info()
 		tootalFood = tootalFood + animal.howMuchFood()
 	}
@@ -24,18 +24,14 @@ func (f *Farm) getFarmInfo() (tootalFood float64) {
 	return tootalFood
 }
 
-// to do func (f *Farm) addAnimal(animal Animals)
-// to do func (f *Farm) removeAnimal(animal Animals)
-// to do func (f *Farm) killAnimal(animal Animals) // = nil
-
-// Animal entity
-type Animal struct {
-	Name          string
+// animal entity
+type animal struct {
+	name          string
 	weight        float64
-	FoodPerweight float64
+	foodPerWeight float64
 }
 
-type Animals interface {
+type animals interface {
 	canShowInfo
 	canEat
 }
@@ -48,116 +44,116 @@ type canShowInfo interface {
 	info()
 }
 
-func (a *Animal) howMuchFood() float64 {
-	return a.weight * a.FoodPerweight
+func (a animal) howMuchFood() float64 {
+	return a.weight * a.foodPerWeight
 }
 
-func (a *Animal) showInfo() {
-	fmt.Printf("\nThe pet name is \"%v\"\n", a.Name)
-	fmt.Printf("%v - is needed in %v foods per month\n", a.Name, a.howMuchFood())
+func (a animal) showInfo() {
+	fmt.Printf("\nThe pet name is \"%v\"\n", a.name)
+	fmt.Printf("%v - is needed in %v foods per month\n", a.name, a.howMuchFood())
 }
 
-// variety of Animal entities
-// Dog entity
-type Dog struct {
-	Animal
-	BiteForce int
+// variety of animal entities
+// dog entity
+type dog struct {
+	animal
+	biteForce int
 }
 
-func createDog(name string, weight float64, biteForce int) Dog {
+func createDog(name string, weight float64, biteForce int) dog {
 	const (
-		foodPerweight = 10
+		foodPerWeight = 10
 		minWeight     = 0.1
-		typeAnimal    = "Dog"
+		typeanimal    = "dog"
 	)
 
 	if name == "" {
-		name = typeAnimal
+		name = typeanimal
 	}
 	if weight < minWeight {
 		weight = minWeight
 	}
-	return Dog{
-		Animal: Animal{
-			Name:          name,
+	return dog{
+		animal: animal{
+			name:          name,
 			weight:        weight,
-			FoodPerweight: foodPerweight,
+			foodPerWeight: foodPerWeight,
 		},
-		BiteForce: biteForce,
+		biteForce: biteForce,
 	}
 }
 
-func (d *Dog) info() {
+func (d dog) info() {
 	d.showInfo()
-	fmt.Printf("The dog's bite force is %v\n", d.BiteForce)
+	fmt.Printf("The dog's bite force is %v\n", d.biteForce)
 }
 
-// Cat entity
-type Cat struct {
-	Animal
-	Agilaty int
+// cat entity
+type cat struct {
+	animal
+	agilaty int
 }
 
-func createCat(name string, weight float64, agility int) Cat {
+func createCat(name string, weight float64, agility int) cat {
 	const (
-		foodPerweight = 7
+		foodPerWeight = 7
 		minWeight     = 0.1
-		typeAnimal    = "Cat"
+		typeanimal    = "cat"
 	)
 
 	if name == "" {
-		name = typeAnimal
+		name = typeanimal
 	}
 	if weight < minWeight {
 		weight = minWeight
 	}
 
-	return Cat{
-		Animal: Animal{
-			Name:          name,
+	return cat{
+		animal: animal{
+			name:          name,
 			weight:        weight,
-			FoodPerweight: foodPerweight,
+			foodPerWeight: foodPerWeight,
 		},
-		Agilaty: agility,
+		agilaty: agility,
 	}
 }
 
-func (c *Cat) info() {
+func (c cat) info() {
 	c.showInfo()
-	fmt.Printf("Agility of the cat is  %v \n", c.Agilaty)
+	fmt.Printf("Agility of the cat is  %v \n", c.agilaty)
 }
 
-// Cow entety
-type Cow struct {
-	Animal
-	AmountMilk float64
+// cow entety
+type cow struct {
+	animal
+	amountMilk float64
 }
 
-func createCow(name string, weight float64, amountMilk float64) Cow {
+func createCow(name string, weight float64, amountMilk float64) cow {
 	const (
-		foodPerweight = 25
+		foodPerWeight = 25
 		minWeight     = 20
-		typeAnimal    = "Cow"
+		typeanimal    = "cow"
 	)
 
 	if name == "" {
-		name = typeAnimal
+		name = typeanimal
 	}
 	if weight < minWeight {
 		weight = minWeight
 	}
 
-	return Cow{
-		Animal: Animal{
-			Name:          name,
+	return cow{
+		animal: animal{
+			name:          name,
 			weight:        weight,
-			FoodPerweight: foodPerweight,
+			foodPerWeight: foodPerWeight,
 		},
-		AmountMilk: amountMilk,
+		amountMilk: amountMilk,
 	}
 }
 
-func (c *Cow) info() {
+func (c cow) info() {
 	c.showInfo()
-	fmt.Printf("The cow gives %v liter of milk\n", c.AmountMilk)
+	fmt.Printf("The cow gives %v liter of milk\n", c.amountMilk)
 }
