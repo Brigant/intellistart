@@ -24,22 +24,22 @@ func main() {
 	// Ваша реалізація
 	var wgSum sync.WaitGroup
 	wgSum.Add(len(n))
-	for _, i := range n {
+	for k, i := range n {
 
-		go func(i []int) {
+		go func(i []int, k int) {
 			defer wgSum.Done()
-			sum(i)
-		}(i)
+			sum(i, k)
+		}(i, k)
 	}
 
 	wgSum.Wait()
 }
 
-func sum(s []int) {
+func sum(s []int, k int) {
 	// Ваша реалізація
 	sum := 0
 	for _, i := range s {
 		sum += i
 	}
-	fmt.Println(sum)
+	fmt.Printf("Slice %v: %v\n", k, sum)
 }
