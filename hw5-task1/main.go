@@ -37,7 +37,7 @@ func main() {
 
 func sum(s []int, k int) {
 	// Ваша реалізація
-	sum := 0
+	var sum int
 	for _, i := range s {
 		sum += i
 	}
