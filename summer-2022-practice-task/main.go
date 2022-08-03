@@ -35,7 +35,7 @@ const (
 	criteriaArrTime   = "arrival-time"
 	criteriaDepTime   = "departure-time"
 	fileName          = "data.json"
-	timeFormat        = "15:05:04"
+	timeFormat        = "15:04:05"
 	firsNaturalNumber = 1
 	resultLimit       = 3
 )
@@ -84,25 +84,35 @@ func FindTrains(departureStation, arrivalStation, criteria string) (Trains, erro
 	result := Trains{}
 
 	// пошук по станціям
-	for _, v := range trains {
+	/* for _, v := range trains {
 		if v.ArrivalStationID == arrStation && v.DepartureStationID == depStation {
 			result = append(result, v)
 		}
+	} */
+
+	for i := 0; i < len(trains); i++ {
+		if trains[i].ArrivalStationID == arrStation && trains[i].DepartureStationID == depStation {
+			result = append(result, trains[i])
+		}
 	}
+
+	/* sort.Slice(result, func(i, j int) bool {
+		return result[i].TrainID < result[j].TrainID
+	}) */
 
 	// сортування по критерію
 	if criteria == criteriaPrice {
-		sort.Slice(result, func(i, j int) bool {
+		sort.SliceStable(result, func(i, j int) bool {
 			return result[i].Price < result[j].Price
 		})
 	}
 	if criteria == criteriaDepTime {
-		sort.Slice(result, func(i, j int) bool {
+		sort.SliceStable(result, func(i, j int) bool {
 			return result[i].DepartureTime.Before(result[j].DepartureTime)
 		})
 	}
 	if criteria == criteriaArrTime {
-		sort.Slice(result, func(i, j int) bool {
+		sort.SliceStable(result, func(i, j int) bool {
 			return result[i].ArrivalTime.Before(result[j].ArrivalTime)
 		})
 	}
@@ -155,7 +165,7 @@ func getData() (Trains, error) {
 
 	t := Trains{}
 
-	for _, i := range routs {
+	/* for _, i := range routs {
 		arrTime, err := time.Parse(timeFormat, i.ArrivalTime)
 		if err != nil {
 			return nil, err
@@ -169,6 +179,27 @@ func getData() (Trains, error) {
 			DepartureStationID: i.DepartureStationID,
 			ArrivalStationID:   i.ArrivalStationID,
 			Price:              i.Price,
+			ArrivalTime:        arrTime,
+			DepartureTime:      depTime,
+		}
+		t = append(t, train)
+
+	} */
+
+	for i := 0; i < len(routs); i++ {
+		arrTime, err := time.Parse(timeFormat, routs[i].ArrivalTime)
+		if err != nil {
+			return nil, err
+		}
+		depTime, err := time.Parse(timeFormat, routs[i].DepartureTime)
+		if err != nil {
+			return nil, err
+		}
+		train := Train{
+			TrainID:            routs[i].TrainID,
+			DepartureStationID: routs[i].DepartureStationID,
+			ArrivalStationID:   routs[i].ArrivalStationID,
+			Price:              routs[i].Price,
 			ArrivalTime:        arrTime,
 			DepartureTime:      depTime,
 		}
