@@ -165,7 +165,7 @@ func getData() (Trains, error) {
 
 	t := Trains{}
 
-	/* for _, i := range routs {
+	for _, i := range routs {
 		arrTime, err := time.Parse(timeFormat, i.ArrivalTime)
 		if err != nil {
 			return nil, err
@@ -183,28 +183,6 @@ func getData() (Trains, error) {
 			DepartureTime:      depTime,
 		}
 		t = append(t, train)
-
-	} */
-
-	for i := 0; i < len(routs); i++ {
-		arrTime, err := time.Parse(timeFormat, routs[i].ArrivalTime)
-		if err != nil {
-			return nil, err
-		}
-		depTime, err := time.Parse(timeFormat, routs[i].DepartureTime)
-		if err != nil {
-			return nil, err
-		}
-		train := Train{
-			TrainID:            routs[i].TrainID,
-			DepartureStationID: routs[i].DepartureStationID,
-			ArrivalStationID:   routs[i].ArrivalStationID,
-			Price:              routs[i].Price,
-			ArrivalTime:        arrTime,
-			DepartureTime:      depTime,
-		}
-		t = append(t, train)
-
 	}
 	return t, nil
 }
