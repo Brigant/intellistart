@@ -51,8 +51,6 @@ func main() {
 	fmt.Scan(&criteria)
 
 	result, err := FindTrains(departureStation, arrivalStation, criteria)
-
-	//	... обробка помилки
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -65,10 +63,7 @@ func main() {
 //
 func FindTrains(departureStation, arrivalStation, criteria string) (Trains, error) {
 	// ... код
-
-	// валідації введенних даних
-	err := validate(departureStation, arrivalStation, criteria)
-	if err != nil {
+	if err := validate(departureStation, arrivalStation, criteria); err != nil {
 		return nil, err
 	}
 	arrStation, err := strconv.Atoi(arrivalStation)
@@ -80,25 +75,19 @@ func FindTrains(departureStation, arrivalStation, criteria string) (Trains, erro
 		return nil, errBadDepStation
 	}
 
-	trains, _ := getData()
+	trains, err := getData()
+	if err != nil {
+		return nil, err
+	}
+
 	result := Trains{}
 
 	// пошук по станціям
-	/* for _, v := range trains {
-		if v.ArrivalStationID == arrStation && v.DepartureStationID == depStation {
-			result = append(result, v)
-		}
-	} */
-
 	for i := 0; i < len(trains); i++ {
 		if trains[i].ArrivalStationID == arrStation && trains[i].DepartureStationID == depStation {
 			result = append(result, trains[i])
 		}
 	}
-
-	/* sort.Slice(result, func(i, j int) bool {
-		return result[i].TrainID < result[j].TrainID
-	}) */
 
 	// сортування по критерію
 	if criteria == criteriaPrice {
@@ -123,6 +112,7 @@ func FindTrains(departureStation, arrivalStation, criteria string) (Trains, erro
 	if len(result) < resultLimit {
 		return result, nil
 	}
+
 	return result[:resultLimit], nil // маєте повернути правильні значення
 }
 
@@ -151,19 +141,17 @@ func getData() (Trains, error) {
 		ArrivalTime        string  `json:"arrivalTime"`
 		DepartureTime      string  `json:"departureTime"`
 	}
-	routs := []rout{}
+	var routs []rout
+	var t Trains
 
 	rawData, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal(rawData, &routs)
-	if err != nil {
+	if err = json.Unmarshal(rawData, &routs); err != nil {
 		return nil, err
 	}
-
-	t := Trains{}
 
 	for _, i := range routs {
 		arrTime, err := time.Parse(timeFormat, i.ArrivalTime)
@@ -184,6 +172,7 @@ func getData() (Trains, error) {
 		}
 		t = append(t, train)
 	}
+
 	return t, nil
 }
 
